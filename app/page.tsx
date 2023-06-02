@@ -2,24 +2,28 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { medianas } from "@/contants/words";
 import startDesktop from "../assets/hangman/startDesktop.svg";
 import endDesktop from "../assets/hangman/endDesktop.svg";
 import Keyboard from "@/components/Keyboard";
 import SelectedWord from "./../components/SelectedWord";
 import { useContext } from "react";
 import { HangmanContext, IUsedLetterState } from "@/contexts/hangman.context";
+import { ISecretWord, SecretWordContext } from "@/contexts/secretWord.context";
+
 const HomePage: React.FC = () => {
   const hangmanStates = [endDesktop, startDesktop];
   const [hangman, setHangman] = useState<string>(endDesktop);
   const [game, setGame] = useState<boolean>(false);
-
   const [tries, setTries] = useState<number | null>(null);
-  const [secretWord, setSecretWord] = useState<string[]>([]);
+  const { secretWord, setSecretWord } =
+    useContext<ISecretWord>(SecretWordContext);
   const { usedLetter, setUsedLetter } =
     useContext<IUsedLetterState>(HangmanContext);
+
   const getSecretWord = (): string[] => {
-    let word: string = "calle";
-    const secretWord: string[] = word.toUpperCase().split("");
+    const randomWord = medianas[Math.floor(Math.random() * medianas.length)];
+    const secretWord: string[] = randomWord.toUpperCase().split("");
     return secretWord;
   };
 
@@ -58,7 +62,7 @@ const HomePage: React.FC = () => {
       </section>
       <section className="flex flex-col bg-dark">
         <SelectedWord secretWord={secretWord} />
-        <Keyboard />
+        <Keyboard game={game} tries={tries} setTries={setTries} />
       </section>
     </main>
   );

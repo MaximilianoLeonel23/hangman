@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { HangmanContextProvider } from "@/contexts/hangman.context";
-
+import { SecretWordContextProvider } from "@/contexts/secretWord.context";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -18,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <HangmanContextProvider>{children}</HangmanContextProvider>
+        <HangmanContextProvider>
+          <SecretWordContextProvider>{children}</SecretWordContextProvider>
+        </HangmanContextProvider>
       </body>
     </html>
   );
