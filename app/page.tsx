@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { medianas } from "@/contants/words";
+import { getSecretWord } from "@/contants/words";
 import startDesktop from "../assets/hangman/startDesktop.svg";
 import endDesktop from "../assets/hangman/endDesktop.svg";
 import Keyboard from "@/components/Keyboard";
@@ -13,6 +13,7 @@ import { ISecretWord, SecretWordContext } from "@/contexts/secretWord.context";
 
 const HomePage: React.FC = () => {
   const hangmanStates = [endDesktop, startDesktop];
+  const [matchLabel, setMatchLabel] = useState<string>("Empezar partida");
   const [hangman, setHangman] = useState<string>(endDesktop);
   const [game, setGame] = useState<boolean>(false);
   const [tries, setTries] = useState<number | null>(null);
@@ -21,18 +22,47 @@ const HomePage: React.FC = () => {
   const { usedLetter, setUsedLetter } =
     useContext<IUsedLetterState>(HangmanContext);
 
-  const getSecretWord = (): string[] => {
-    const randomWord = medianas[Math.floor(Math.random() * medianas.length)];
-    const secretWord: string[] = randomWord.toUpperCase().split("");
-    return secretWord;
-  };
+  useEffect(() => {
+    if (game === true) {
+      const allLetterThere = secretWord.every((letter) =>
+        usedLetter.includes(letter)
+      );
+      if (allLetterThere) {
+        const winner: boolean = true;
+        endGame(winner);
+      } else if (tries === 0) {
+        const winner: boolean = false;
+        endGame(winner);
+      }
+    }
+  }, [usedLetter]);
 
   const startGame = () => {
-    const secretWord = getSecretWord();
+    const secretWord = getSecretWord("medium");
     setSecretWord(secretWord);
     setGame(true);
     setTries(7);
     setHangman(hangmanStates[1]);
+  };
+
+  const endGame = (winner: boolean) => {
+    console.log("Se han acertado todas las letras");
+    setGame(false);
+    setTries(null);
+    if (winner) {
+      setHangman(hangmanStates[0]);
+      setMatchLabel("¡Felicidades! Has acertado");
+      console.log("hubo un ganador");
+    } else {
+      setHangman(hangmanStates[0]);
+      console.log("No hubo ganador");
+    }
+    setUsedLetter([]);
+    setSecretWord([]);
+
+    setInterval(() => {
+      setMatchLabel("Juega otra vez");
+    }, 3000);
   };
 
   return (
@@ -46,15 +76,18 @@ const HomePage: React.FC = () => {
           {game ? null : (
             <button
               onClick={startGame}
-              className="bg-dark px-4 w-fit py-1 rounded text-light text-sm"
+              className="bg-dark px-4 w-fit py-2 border border-dark rounded text-light text-sm"
             >
-              Empezar
+              {matchLabel}
             </button>
           )}
-          <p className={`${game ? "block" : "hidden"} text-dark text-sm`}>
+          <p
+            className={`${
+              game ? "block" : "hidden"
+            } text-dark text-sm px-4 py-2 border border-dark rounded w-fit`}
+          >
             Intentos: <span>{tries ? tries : null}</span>
           </p>
-          <p>{usedLetter}</p>
         </div>
         <div className="w-1/2">
           <Image src={hangman} alt="hangman" className="mx-auto" />

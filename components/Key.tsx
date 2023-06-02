@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useContext } from "react";
 import { HangmanContext, IUsedLetterState } from "@/contexts/hangman.context";
 import { ISecretWord, SecretWordContext } from "@/contexts/secretWord.context";
@@ -19,25 +19,27 @@ const Key: React.FC<Props> = ({ label, value, game, tries, setTries }) => {
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isUsed, setIsUsed] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (game === false) {
+      setIsCorrect(false);
+      setIsUsed(false);
+    }
+  }, [game]);
+
   const handleKeyButton = (value: string) => {
     if (!isUsed) {
-      setUsedLetter([...usedLetter, value]);
+      setUsedLetter(usedLetter.concat(value));
       setIsUsed(true);
-      setIsCorrect(findIfIsCorrect());
-    }
-
-    if (isCorrect) {
-      setTries(tries);
-    } else {
-      if (tries === null) {
-        setTries(tries);
-      } else {
+      const correct = findIfIsCorrect(value);
+      setIsCorrect(correct);
+      console.log(usedLetter);
+      if (!correct && tries !== null) {
         setTries(tries - 1);
       }
     }
   };
 
-  const findIfIsCorrect = () => {
+  const findIfIsCorrect = (value: string) => {
     const isCorrectOrNot = secretWord.some((letter) => letter === value);
     return isCorrectOrNot;
   };
