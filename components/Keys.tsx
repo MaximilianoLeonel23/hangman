@@ -6,7 +6,7 @@ const Keys: React.FC = () => {
   return (
     <>
       {keys.map((key) => {
-        return <Key label={key} key={key} />;
+        return <Key label={key} key={key} value={key} />;
       })}
     </>
   );
