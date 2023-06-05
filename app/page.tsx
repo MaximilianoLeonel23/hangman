@@ -1,17 +1,6 @@
 "use client";
-
-import state0 from "../assets/hangmanStates/state0.svg";
-import state1 from "../assets/hangmanStates/state1.svg";
-import state2 from "../assets/hangmanStates/state2.svg";
-import state3 from "../assets/hangmanStates/state3.svg";
-import state4 from "../assets/hangmanStates/state4.svg";
-import state5 from "../assets/hangmanStates/state5.svg";
-import state6 from "../assets/hangmanStates/state6.svg";
-import state7 from "../assets/hangmanStates/state7.svg";
-import state8 from "../assets/hangmanStates/state8.svg";
-import { hangmanStates } from "../contants/hangmanStates";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import HangmanImage from "./../components/HangmanImage";
 import { getSecretWord } from "@/contants/words";
 import Keyboard from "@/components/Keyboard";
 import SelectedWord from "./../components/SelectedWord";
@@ -25,11 +14,13 @@ import {
   HangmanContext,
   IHangmanContext,
 } from "@/contexts/hangmanState.context";
+import Star from "@/components/Star";
 
 const HomePage: React.FC = () => {
   const [matchLabel, setMatchLabel] = useState<string>("Empezar partida");
   const [game, setGame] = useState<boolean>(false);
   const [tries, setTries] = useState<number | null>(null);
+  const [difficulty, setDifficulty] = useState<number>(3);
   const { secretWord, setSecretWord } =
     useContext<ISecretWord>(SecretWordContext);
   const { usedLetter, setUsedLetter } =
@@ -52,7 +43,22 @@ const HomePage: React.FC = () => {
   }, [usedLetter]);
 
   const startGame = () => {
-    const secretWord = getSecretWord("medium");
+    let secretWord: string[];
+    console.log(difficulty);
+    switch (difficulty) {
+      case 1:
+        secretWord = getSecretWord("easy");
+        break;
+      case 2:
+        secretWord = getSecretWord("medium");
+        break;
+      case 3:
+        secretWord = getSecretWord("hard");
+        break;
+      default:
+        secretWord = getSecretWord("easy");
+    }
+    console.log(secretWord);
     setSecretWord(secretWord);
     setGame(true);
     setTries(7);
@@ -63,6 +69,7 @@ const HomePage: React.FC = () => {
     console.log("Se han acertado todas las letras");
     setGame(false);
     setTries(null);
+    setDifficulty(1);
     if (winner) {
       setMatchLabel("¡Felicidades! Has acertado");
       setHangmanState(8);
@@ -79,22 +86,42 @@ const HomePage: React.FC = () => {
     }, 5000);
   };
 
+  const handleDifficulty = () => {
+    difficulty === 3 ? setDifficulty(1) : setDifficulty((prev) => prev + 1);
+  };
+
   return (
-    <main className="min-h-screen ">
+    <main className="min-h-screen sm:h-screen">
       <section className="flex sm:container mx-auto">
         <div className="flex flex-col gap-y-3  w-1/2 p-4">
-          <h1 className="text-dark font-semibold text-xl">Ahorcado</h1>
+          <h1 className="text-dark font-semibold text-xl sm:text-3xl">
+            Ahorcado
+          </h1>
           <p className="text-dark font-light text-sm">
             ¡Adivina la palabra antes de ser ahorcado!
           </p>
           {game ? null : (
-            <button
-              onClick={startGame}
-              className="bg-dark px-4 w-fit py-2 border border-dark rounded text-light text-sm"
-            >
-              {matchLabel}
-            </button>
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={startGame}
+                className="bg-dark px-4 w-fit py-2 border border-dark rounded text-light text-sm"
+              >
+                {matchLabel}
+              </button>
+              <button
+                onClick={handleDifficulty}
+                className="flex items-center gap-x-1 bg-none px-4 w-fit py-2 border border-incorrect rounded text-dark text-sm"
+              >
+                Dificultad:{" "}
+                <span className="flex gap-x-1 items-center">
+                  {Array.from({ length: difficulty }).map((e, index) => (
+                    <Star key={index} />
+                  ))}
+                </span>
+              </button>
+            </div>
           )}
+
           <p
             className={`${
               game ? "block" : "hidden"
@@ -102,17 +129,10 @@ const HomePage: React.FC = () => {
           >
             Intentos: <span>{tries ? tries : null}</span>
           </p>
-          <p>{hangmanState}</p>
         </div>
-        <div className="w-1/2">
-          <Image
-            src={hangmanStates[hangmanState]}
-            alt="hangman"
-            className="mx-auto"
-          />
-        </div>
+        <HangmanImage />
       </section>
-      <section className="flex flex-col bg-dark">
+      <section className="flex flex-col bg-dark sm:pb-16">
         <SelectedWord secretWord={secretWord} />
         <Keyboard game={game} tries={tries} setTries={setTries} />
       </section>
