@@ -7,7 +7,7 @@ export interface IUsedLetterState {
   setUsedLetter: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export const HangmanContext = createContext<IUsedLetterState>({
+export const UsedLetterContext = createContext<IUsedLetterState>({
   usedLetter: [],
   setUsedLetter: () => {},
 });
@@ -15,7 +15,7 @@ export const HangmanContext = createContext<IUsedLetterState>({
 interface Props {
   children: ReactNode;
 }
-export const HangmanContextProvider: React.FC<Props> = ({ children }) => {
+export const UsedLetterContextProvider: React.FC<Props> = ({ children }) => {
   const [usedLetter, setUsedLetter] = useState<string[]>([]);
 
   const value: IUsedLetterState = {
@@ -23,6 +23,8 @@ export const HangmanContextProvider: React.FC<Props> = ({ children }) => {
     setUsedLetter,
   };
   return (
-    <HangmanContext.Provider value={value}>{children}</HangmanContext.Provider>
+    <UsedLetterContext.Provider value={value}>
+      {children}
+    </UsedLetterContext.Provider>
   );
 };

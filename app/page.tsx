@@ -1,27 +1,41 @@
 "use client";
 
+import state0 from "../assets/hangmanStates/state0.svg";
+import state1 from "../assets/hangmanStates/state1.svg";
+import state2 from "../assets/hangmanStates/state2.svg";
+import state3 from "../assets/hangmanStates/state3.svg";
+import state4 from "../assets/hangmanStates/state4.svg";
+import state5 from "../assets/hangmanStates/state5.svg";
+import state6 from "../assets/hangmanStates/state6.svg";
+import state7 from "../assets/hangmanStates/state7.svg";
+import state8 from "../assets/hangmanStates/state8.svg";
+import { hangmanStates } from "../contants/hangmanStates";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getSecretWord } from "@/contants/words";
-import startDesktop from "../assets/hangman/startDesktop.svg";
-import endDesktop from "../assets/hangman/endDesktop.svg";
 import Keyboard from "@/components/Keyboard";
 import SelectedWord from "./../components/SelectedWord";
 import { useContext } from "react";
-import { HangmanContext, IUsedLetterState } from "@/contexts/hangman.context";
+import {
+  UsedLetterContext,
+  IUsedLetterState,
+} from "@/contexts/usedLetter.context";
 import { ISecretWord, SecretWordContext } from "@/contexts/secretWord.context";
+import {
+  HangmanContext,
+  IHangmanContext,
+} from "@/contexts/hangmanState.context";
 
 const HomePage: React.FC = () => {
-  const hangmanStates = [endDesktop, startDesktop];
   const [matchLabel, setMatchLabel] = useState<string>("Empezar partida");
-  const [hangman, setHangman] = useState<string>(endDesktop);
   const [game, setGame] = useState<boolean>(false);
   const [tries, setTries] = useState<number | null>(null);
   const { secretWord, setSecretWord } =
     useContext<ISecretWord>(SecretWordContext);
   const { usedLetter, setUsedLetter } =
-    useContext<IUsedLetterState>(HangmanContext);
-
+    useContext<IUsedLetterState>(UsedLetterContext);
+  const { hangmanState, setHangmanState } =
+    useContext<IHangmanContext>(HangmanContext);
   useEffect(() => {
     if (game === true) {
       const allLetterThere = secretWord.every((letter) =>
@@ -42,7 +56,7 @@ const HomePage: React.FC = () => {
     setSecretWord(secretWord);
     setGame(true);
     setTries(7);
-    setHangman(hangmanStates[1]);
+    setHangmanState(0);
   };
 
   const endGame = (winner: boolean) => {
@@ -50,19 +64,19 @@ const HomePage: React.FC = () => {
     setGame(false);
     setTries(null);
     if (winner) {
-      setHangman(hangmanStates[0]);
       setMatchLabel("¡Felicidades! Has acertado");
+      setHangmanState(8);
       console.log("hubo un ganador");
     } else {
-      setHangman(hangmanStates[0]);
+      setMatchLabel("¿Te moriste? ¿Tan rápido? Qué mala suerte...");
+      setHangmanState(7);
       console.log("No hubo ganador");
     }
     setUsedLetter([]);
     setSecretWord([]);
-
     setInterval(() => {
       setMatchLabel("Juega otra vez");
-    }, 3000);
+    }, 5000);
   };
 
   return (
@@ -88,9 +102,14 @@ const HomePage: React.FC = () => {
           >
             Intentos: <span>{tries ? tries : null}</span>
           </p>
+          <p>{hangmanState}</p>
         </div>
         <div className="w-1/2">
-          <Image src={hangman} alt="hangman" className="mx-auto" />
+          <Image
+            src={hangmanStates[hangmanState]}
+            alt="hangman"
+            className="mx-auto"
+          />
         </div>
       </section>
       <section className="flex flex-col bg-dark">

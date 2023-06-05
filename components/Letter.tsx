@@ -1,11 +1,14 @@
-import { HangmanContext, IUsedLetterState } from "@/contexts/hangman.context";
+import {
+  UsedLetterContext,
+  IUsedLetterState,
+} from "@/contexts/usedLetter.context";
 import { useContext, useEffect } from "react";
 import React, { useState } from "react";
 interface Props {
   label: string;
 }
 const Letter: React.FC<Props> = ({ label }) => {
-  const { usedLetter } = useContext<IUsedLetterState>(HangmanContext);
+  const { usedLetter } = useContext<IUsedLetterState>(UsedLetterContext);
 
   const [isInTheWord, setIsInTheWord] = useState<boolean>(false);
 

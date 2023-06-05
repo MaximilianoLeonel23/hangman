@@ -1,7 +1,14 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useContext } from "react";
-import { HangmanContext, IUsedLetterState } from "@/contexts/hangman.context";
+import {
+  UsedLetterContext,
+  IUsedLetterState,
+} from "@/contexts/usedLetter.context";
 import { ISecretWord, SecretWordContext } from "@/contexts/secretWord.context";
+import {
+  HangmanContext,
+  IHangmanContext,
+} from "@/contexts/hangmanState.context";
 
 interface Props {
   label: string;
@@ -13,8 +20,9 @@ interface Props {
 
 const Key: React.FC<Props> = ({ label, value, game, tries, setTries }) => {
   const { usedLetter, setUsedLetter } =
-    useContext<IUsedLetterState>(HangmanContext);
-
+    useContext<IUsedLetterState>(UsedLetterContext);
+  const { hangmanState, setHangmanState } =
+    useContext<IHangmanContext>(HangmanContext);
   const { secretWord } = useContext<ISecretWord>(SecretWordContext);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isUsed, setIsUsed] = useState<boolean>(false);
@@ -35,6 +43,8 @@ const Key: React.FC<Props> = ({ label, value, game, tries, setTries }) => {
       console.log(usedLetter);
       if (!correct && tries !== null) {
         setTries(tries - 1);
+        const newState = hangmanState + 1;
+        setHangmanState(newState);
       }
     }
   };
