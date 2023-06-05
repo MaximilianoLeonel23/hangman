@@ -1,7 +1,7 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import Key from "./Key";
 import { keys } from "@/contants/keyboardKeys";
-import { Dispatch, SetStateAction } from "react";
+
 interface Props {
   game: boolean;
   tries: number | null;

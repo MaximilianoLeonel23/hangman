@@ -1,0 +1,15 @@
+export const phrases = [
+  "- ¡Apurate en morir! Llego tarde al cumpleaños de mi sobrina 💀👧🏻",
+  "- Mi padre decía 'no dejes para mañana a quien puedas condenar hoy'",
+  "- ¡Vaya, vaya, parece que te colaste en mi territorio favorito, el juego del ahorcado!",
+  "- Toma estos cupones. *2x1 en muerte súbita. Sin fecha de expiración*",
+  "- Conozco un buen quiropráctico para ese dolor de cuello",
+  "- ¡Qué lindo nudo hiciste! ¿Has considerado trabajar en la marina?",
+  "- Dicen que el ahorcado es un juego de niños, pero veo que a algunos les cuesta un poco más de lo esperado, ¿no te parece?",
+  "- Dicen que siempre hay que intentar cosas nuevas. Pero, sinceramente, este es un enfoque muy extremo...",
+  "- Me parece que estás tomando muy en serio el dicho 'irse por la rama'.",
+  "- Me parece que ahí no va la cabeza, pero como no soy experso en columpios no opino",
+  "- Nunca había conocido a alguien tan decidido a ir al extremo con el juego del ahorcado. ¡Eres un verdadero aventurero!",
+  "- Dicen que la vida está llena de altibajos. Parece que estás experimentando el lado 'alto' en este momento.",
+  "- 'Cuando pierdes en el juego del ahorcado y la Muerte te dice 'mejor suerte la próxima vez'' Ahre",
+];

@@ -5,6 +5,7 @@ import {
   HangmanContext,
   IHangmanContext,
 } from "@/contexts/hangmanState.context";
+
 const HangmanImage: React.FC = () => {
   const { hangmanState } = useContext<IHangmanContext>(HangmanContext);
   return (

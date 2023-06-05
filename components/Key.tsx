@@ -1,5 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useContext } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useContext,
+} from "react";
 import {
   UsedLetterContext,
   IUsedLetterState,
@@ -28,7 +33,7 @@ const Key: React.FC<Props> = ({ label, value, game, tries, setTries }) => {
   const [isUsed, setIsUsed] = useState<boolean>(false);
 
   useEffect(() => {
-    if (game === false) {
+    if (!game) {
       setIsCorrect(false);
       setIsUsed(false);
     }
@@ -36,28 +41,26 @@ const Key: React.FC<Props> = ({ label, value, game, tries, setTries }) => {
 
   const handleKeyButton = (value: string) => {
     if (!isUsed) {
-      setUsedLetter(usedLetter.concat(value));
+      setUsedLetter((prev) => [...prev, value]);
       setIsUsed(true);
       const correct = findIfIsCorrect(value);
       setIsCorrect(correct);
-      console.log(usedLetter);
+
       if (!correct && tries !== null) {
-        setTries(tries - 1);
-        const newState = hangmanState + 1;
-        setHangmanState(newState);
+        setTries((prevTries) => (prevTries ?? 0) - 1);
+        setHangmanState((prevHangmanState) => prevHangmanState + 1);
       }
     }
   };
 
   const findIfIsCorrect = (value: string) => {
-    const isCorrectOrNot = secretWord.some((letter) => letter === value);
-    return isCorrectOrNot;
+    return secretWord.includes(value);
   };
 
   return (
     <button
       onClick={() => handleKeyButton(value)}
-      disabled={isUsed || game === false}
+      disabled={isUsed || !game}
       className={`h-12 w-8 ${
         isUsed
           ? isCorrect

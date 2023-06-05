@@ -9,6 +9,90 @@ const easy: string[] = [
   "mano",
   "pan",
   "flor",
+  "lago",
+  "arbol",
+  "oso",
+  "mar",
+  "taza",
+  "puerta",
+  "cielo",
+  "naranja",
+  "silla",
+  "pato",
+  "pollo",
+  "agua",
+  "plato",
+  "cama",
+  "huevo",
+  "papel",
+  "foto",
+  "boca",
+  "rio",
+  "nieve",
+  "carta",
+  "camino",
+  "piedra",
+  "nube",
+  "pluma",
+  "diente",
+  "campana",
+  "cuerda",
+  "tren",
+  "vaca",
+  "leche",
+  "libro",
+  "planta",
+  "puente",
+  "gris",
+  "lindo",
+  "rapido",
+  "alegre",
+  "ojo",
+  "hoja",
+  "dulce",
+  "sal",
+  "pelo",
+  "amigo",
+  "angel",
+  "tigre",
+  "musica",
+  "guitarra",
+  "moto",
+  "arte",
+  "sombra",
+  "ciudad",
+  "calle",
+  "piscina",
+  "playa",
+  "parque",
+  "fresa",
+  "galleta",
+  "pais",
+  "torta",
+  "sabor",
+  "azucar",
+  "amor",
+  "risa",
+  "familia",
+  "bailar",
+  "juego",
+  "sonrisa",
+  "amable",
+  "abrazo",
+  "beso",
+  "magia",
+  "sueno",
+  "dormir",
+  "correr",
+  "viaje",
+  "regalo",
+  "cuento",
+  "dia",
+  "noche",
+  "luna",
+  "estrella",
+  "avion",
+  "globo",
 ];
 
 const medium: string[] = [
@@ -22,39 +106,175 @@ const medium: string[] = [
   "nube",
   "cuerda",
   "joven",
+  "cafe",
+  "mariposa",
+  "plato",
+  "lengua",
+  "sombra",
+  "tema",
+  "bosque",
+  "cruzar",
+  "cruel",
+  "historia",
+  "moneda",
+  "color",
+  "ruta",
+  "triste",
+  "calor",
+  "volar",
+  "cuerpo",
+  "pirata",
+  "carnaval",
+  "misterio",
+  "luz",
+  "fiesta",
+  "maleta",
+  "libro",
+  "fuego",
+  "lugar",
+  "verde",
+  "rojo",
+  "viento",
+  "cancion",
+  "rayo",
+  "brazo",
+  "flecha",
+  "mente",
+  "juego",
+  "poder",
+  "fantasma",
+  "tierra",
+  "sueno",
+  "jungla",
+  "volcan",
+  "sirena",
+  "tesoro",
+  "rio",
+  "tesoro",
+  "escuela",
+  "globo",
+  "sombrero",
+  "vida",
+  "mente",
+  "calle",
+  "espada",
+  "caracol",
+  "fama",
+  "hora",
+  "niebla",
+  "sol",
+  "paz",
 ];
 
 const hard: string[] = [
-  "esdrújula",
+  "esdrujula",
   "quimera",
-  "efímero",
+  "efimero",
   "esgrimir",
   "peregrino",
-  "oxímoron",
+  "oximoron",
   "pleonasmo",
   "hirsuto",
-  "ánfora",
+  "anfora",
   "efervescente",
+  "saxofon",
+  "resiliencia",
+  "recondito",
+  "lexico",
+  "penumbra",
+  "furtivo",
+  "sublime",
+  "idiosincrasia",
+  "exhuberante",
+  "epifania",
+  "inefable",
+  "bohemia",
+  "inequivoco",
+  "paradoja",
+  "melancolia",
+  "nostalgia",
+  "enigma",
+  "paradigma",
+  "reticente",
+  "paradojico",
+  "voluptuoso",
+  "inexpugnable",
+  "inquebrantable",
+  "irrevocable",
+  "inconmensurable",
+  "meticuloso",
+  "incongruente",
+  "perplejidad",
+  "inconexo",
+  "inmanente",
+  "palimpsesto",
+  "analogia",
+  "atemporal",
+  "desdicha",
+  "arcano",
+  "trascendental",
+  "inefable",
+  "inagotable",
+  "inmutable",
+  "ambiguo",
+  "incognita",
+  "intrincado",
+  "inapelable",
+  "indubitable",
+  "indomable",
+  "prosperidad",
+  "subversivo",
+  "transcendencia",
+  "indescifrable",
+  "ambivalente",
+  "plenitud",
+  "proeza",
+  "consistencia",
+  "abstruso",
+  "incipiente",
+  "inexpugnable",
+  "perspicaz",
+  "plenitud",
+  "arquetipo",
+  "efimero",
 ];
 
 export const getSecretWord = (difficulty: string): string[] => {
-  let wordList: string[];
-
-  switch (difficulty) {
-    case "easy":
-      wordList = easy;
-      break;
-    case "medium":
-      wordList = medium;
-      break;
-    case "hard":
-      wordList = hard;
-      break;
-    default:
-      wordList = [];
-  }
-
-  const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+  const wordList: string[] = getWordList(difficulty);
+  const randomWord: string = getRandomWord(wordList);
   const secretWord: string[] = randomWord.toUpperCase().split("");
   return secretWord;
+};
+
+// Obtiene una lista de palabras según dificultad
+const getWordList = (difficulty: string): string[] => {
+  switch (difficulty) {
+    case "easy":
+      return easy;
+    case "medium":
+      return medium;
+    case "hard":
+      return hard;
+    default:
+      return [];
+  }
+};
+
+// Obtiene una palabra aleatoria de la lista
+const getRandomWord = (wordList: string[]): string => {
+  return wordList[Math.floor(Math.random() * wordList.length)];
+};
+
+// Obtiene una dificultad segun el estado difficulty
+export const getDifficulty = (difficulty: number) => {
+  switch (difficulty) {
+    case 1:
+      return "easy";
+    case 2:
+      return "medium";
+    case 3:
+      return "hard";
+    default:
+      return "easy";
+  }
 };
